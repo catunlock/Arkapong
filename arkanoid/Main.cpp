@@ -1,12 +1,10 @@
 #define _USE_MATH_DEFINES // for C++
 #include <cmath>
-
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
-
-
+#include "angles.h"
 
 using namespace std;
 using namespace sf;
@@ -14,10 +12,10 @@ using namespace sf;
 // Window fix size.
 const unsigned int windowWidth{ 800 }, windowHeight{ 600 };
 // Ball constants
-const float ballRadius{ 6.0f }, ballVelocity{ 2.0f };
+const float ballRadius{ 6.0f }, ballVelocity{ 4.0f };
 // Paddle constants
 const float paddleHeight{ 80.0f }, paddleWidth{ 20.0f }, paddleVelocity{ 14.0f };
-const double paddleToRadians{ M_PI_2 / (paddleHeight / 2.0f) };
+const double paddleToRadians{ M_PI / paddleHeight };
 const float paddleWindowMargin{ 10.0f };
 // Bricks constants
 const float blockWidth{ 80.0f }, blockHeight{ 25.0f }, blockSpace{ 3 };
@@ -197,48 +195,28 @@ template<class T1, class T2> bool isIntersecting(T1& mA, T2& mB)
 }
 */
 
-void testCollision(Paddle& paddle, Ball& ball) 
+void testCollision(Paddle& paddle, Ball& ball)
 {
 	if (!isIntersecting(paddle, ball)) return;
 
-	float tocado{ 0 };
-	bool tocadoSuperior{ paddle.top() <= ball.y() && paddle.y() >= ball.y() };
-	float newAngle = 0;
+	// Calculate the Y where collide the ball in the paddle.
+	float tocado{ ball.y() - paddle.top() };
+	// Calcula el nuevo angulo de la bola teniendo en cuenta, que al restar la 
+	// posicion donde a tocado, a la mitad de la altura de la paleta, si el numero 
+	// es positivo la pelota sale
+	// hacia arriba, si es negativo hacia abajo
+	float newAngle = ((paddleHeight / 2) - tocado) * paddleToRadians;
 
-	if (tocadoSuperior)  // Cambiar por la mitad de la altura.
-	{
-		tocado = ball.y() - paddle.top();
-		newAngle = ((paddleHeight / 2) - tocado) * paddleToRadians;
-		cout << "Tocado el paddle por la mitad superior" << endl;
-	}
-	else
-	{
-		tocado = ball.y() - paddle.y();
-		newAngle = ((paddleHeight / 2) - tocado) * paddleToRadians;
-		newAngle = maxRadian - newAngle;
-		cout << "Tocado el paddle por la mitad inferior" << endl;
-	}
+	// negamos el sinus porque en sfml la cordneada 0,0 es arriba a la izquierda.
+	float cosinus = cos(newAngle), sinus = -sin(newAngle);
 
-	
+#if _DEBUG
+	cout << "New angle: " << newAngle << " cos: " << cosinus << " sin: " << sinus << endl;
+#endif
 
-	cout << "New ball angle: " << newAngle << endl;
-	ball.angle = newAngle;
-
-	if (ball.velocity.x < 0)
-	{
-		ball.shape.setPosition(ball.x() + ballVelocity, ball.y());
-		ball.velocity.x = cos(ball.angle);
-	}
-	else
-	{
-		ball.shape.setPosition(ball.x() - ballVelocity, ball.y());
-		ball.velocity.x = -cos(ball.angle);
-	}
-	
-	ball.velocity.y = (tocadoSuperior) ? -sin(ball.angle) : sin(ball.angle);
-
-	ball.velocity.x *= ballVelocity;
-	ball.velocity.y *= ballVelocity;
+	// if the ball has a positive velocity in the x-axis means the ball collide to the right paddle.
+	ball.velocity.x = (ball.velocity.x > 0) ? -(cosinus*ballVelocity) : cosinus*ballVelocity;
+	ball.velocity.y = sinus * ballVelocity;
 }
 
 void testCollision(Brick& brick, Ball& ball)
@@ -281,6 +259,8 @@ void processMouseMoveEvent(Paddle& paddle, Event& event)
 
 int main()
 {
+	testRadians();
+
 	RenderWindow window{ VideoMode{ windowWidth, windowHeight }, "Balls" };
 	//window.setFramerateLimit(60);
 	window.setVerticalSyncEnabled(true);
