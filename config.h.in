@@ -1,0 +1,2 @@
+#define Arkapong_VERSION_MAJOR @Arkapong_VERSION_MAJOR@
+#define Arkapong_VERSION_MINOR @Arkapong_VERSION_MINOR@
