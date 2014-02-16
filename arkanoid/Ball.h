@@ -7,11 +7,9 @@ struct Ball
 {
 	sf::CircleShape shape;
 	sf::Vector2f velocity{ -ballVelocity, -ballVelocity };
-	float angle;
 
 	Ball(float mX, float mY)
 	{
-		angle = 0;
 		shape.setPosition(mX, mY);
 		shape.setRadius(ballRadius);
 		shape.setFillColor(sf::Color::White);
