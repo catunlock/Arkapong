@@ -31,10 +31,19 @@ include_directories("${PROJECT_BINARY_DIR}")
 set(SOURCE_FILES 
 	src/Main.cpp
 	src/angles.cpp
-	)
+)
+	
+set(HEADER_FILES
+	src/angles.h
+	src/Ball.h
+	src/Brick.h
+	src/constants.h
+	src/Map.h
+	src/Paddle.h
+)
 
 set(EXECUTABLE_NAME "Arkapong")
-add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
+add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 
 
 # Detect and add SFML
