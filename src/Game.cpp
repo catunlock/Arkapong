@@ -12,6 +12,7 @@ Game::Game(sf::RenderWindow& window) :
 {
 	colorMap['R'] = sf::Color::Red;
 	colorMap['B'] = sf::Color::Cyan;
+	map.loadMap();
 }
 
 Game::~Game()

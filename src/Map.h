@@ -13,12 +13,18 @@
 // Typedef
 typedef std::unordered_map<char, sf::Color> ColorMap;
 
-struct Map
+class Map
 {
-	std::vector<Brick> bricks;
-
+public:
 	// TODO: Check for the level file exists.
-	Map(std::string filePath, ColorMap& colorMap)
+	Map(std::string filePath, ColorMap& colorMap) :
+		filePath(filePath),
+		colorMap(colorMap)
+	{
+		
+	}
+
+	void loadMap()
 	{
 		std::ifstream file{ filePath };
 		char brickType{ '.' };
@@ -40,5 +46,14 @@ struct Map
 #endif
 		}
 	}
+
+public:
+	std::vector<Brick> bricks;
+
+private:
+	std::string filePath;
+	ColorMap& colorMap;
+
+	
 
 };
