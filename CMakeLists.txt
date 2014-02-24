@@ -30,16 +30,16 @@ include_directories("${PROJECT_BINARY_DIR}")
 # Define sources and executable
 set(SOURCE_FILES 
 	src/Main.cpp
-	src/angles.cpp
+	src/Game.cpp
 )
 	
 set(HEADER_FILES
-	src/angles.h
 	src/Ball.h
 	src/Brick.h
 	src/constants.h
 	src/Map.h
 	src/Paddle.h
+	src/Game.h
 )
 
 set(EXECUTABLE_NAME "Arkapong")

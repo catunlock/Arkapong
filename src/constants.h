@@ -1,7 +1,8 @@
 #pragma once
 
-#define _USE_MATH_DEFINES // for C++
-#include <cmath>
+#define M_PI       3.14159265358979323846
+#define M_PI_2     1.57079632679489661923
+#define M_PI_4     0.785398163397448309616
 
 // Window fix size.
 const unsigned int windowWidth{ 800 }, windowHeight{ 600 };
@@ -22,5 +23,3 @@ const float blockXMargin{ windowWidth / 2 - ((blockWidth + blockSpace) / 1.5f * 
 // Degree constants
 const double maxRadian{ M_PI * 2 };
 
-// Typedef
-typedef std::unordered_map<char, sf::Color> ColorMap;

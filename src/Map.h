@@ -3,10 +3,15 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <fstream>
 #include <SFML/Graphics.hpp>
 
 #include "constants.h"
 #include "Brick.h"
+
+// Typedef
+typedef std::unordered_map<char, sf::Color> ColorMap;
 
 struct Map
 {
